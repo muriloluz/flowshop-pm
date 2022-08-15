@@ -7,7 +7,7 @@ Console.WriteLine("Inicio");
 var parser = new Parser();
 var problema = parser.Ler();
 
-Console.WriteLine("Número de Jobs: {0} -- Número de máquinas: {1}", problema.TotalJobs, problema.TotalMaquinas);
+Console.WriteLine("Número de Jobs: {0} ============ Número de máquinas: {1}", problema.TotalJobs, problema.TotalMaquinas);
 
 Console.WriteLine("Tempo de processamento: ");
 
@@ -21,7 +21,7 @@ for (int i = 0; i < problema.TotalMaquinas; i++)
     Console.WriteLine();
 }
 
-Console.WriteLine("Tempo de manutenções: ");
+Console.WriteLine("Tempo processamento das manutenções: ");
 
 for (int i = 0; i < problema.TotalMaquinas; i++)
 {
@@ -33,15 +33,18 @@ for (int i = 0; i < problema.TotalMaquinas; i++)
     Console.WriteLine();
 }
 
+int tempoParaManutencao = 120;
+
+Console.WriteLine("Tempo máximo para manutenção: " + tempoParaManutencao);
 
 var estrategiaAg = new EstrategiaGA(problema);
-//estrategiaAg.Iniciar();
+estrategiaAg.Iniciar();
 
 
 
-int[] sequencia = new int[] { 0, 1, 2, 4, 3 };
+//int[] sequencia = new int[] { 0, 1, 2, 4, 3 };
 
 
-var individuo = new Individuo(5, 3, sequencia);
-individuo.AtualizarMakeSpan(estrategiaAg.InfoFlowShop);
-individuo.ImprimirIndividuo();
+//var individuo = new Individuo(5, 3, sequencia);
+//individuo.AtualizarMakeSpan(estrategiaAg.InfoFlowShop);
+//individuo.ImprimirIndividuo();
