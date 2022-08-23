@@ -40,12 +40,14 @@ namespace flowshop_pm.GA
 
                 for (int j = 1; j < this.QuantidadeTotalJobs + 1; j++)
                 {
-                    var tempoProcessamentoJob = infoFlowShop.infoJobs.TempoProcessamentoPorMaquina[i - 1][this.SequenciaExecucaoJobs[j - 1]];
+                    var tempoProcessamentoJob = infoFlowShop.infoJobs.TempoProcessamentoPorMaquina[this.SequenciaExecucaoJobs[j - 1]][i - 1];
 
                     var manutencaoAtual = this.ManutencaoPreventiva[i - 1] == null ? 0 : this.ManutencaoPreventiva[i - 1].Length - 1;
-                    var tempoParaManutencao = 120;
+
+                    var tempoParaManutencao = infoFlowShop.TempoParaManutencao[i - 1];
+
                     var manutencaoNecessaria = (tempoGastoProcessamento + tempoProcessamentoJob) >= tempoParaManutencao;
-                    var tempoProcessamentoManutencao = manutencaoNecessaria ? infoFlowShop.infoManutencaoMaquina.TempoManutencao[i - 1][manutencaoAtual] : 0;
+                    var tempoProcessamentoManutencao = manutencaoNecessaria ? infoFlowShop.infoManutencaoMaquina.TempoManutencao[manutencaoAtual][i - 1] : 0;
 
                     if (manutencaoNecessaria)
                     {
@@ -97,19 +99,24 @@ namespace flowshop_pm.GA
             {
                 foreach (var j in this.ManutencaoPreventiva[s])
                 {
-                    Console.WriteLine(" Manutencao Maquina " + s + " Antes do job: " + j);
+                    if(j == -1)
+                    {
+                        continue;
+                    }
+
+                    Console.WriteLine(" Manutencao Maquina " + s + " =====  Entre a Sequência " + j + " e " + (j + 1) +  "  ===== Antes do Job: " + this.SequenciaExecucaoJobs[j]);
                 }
             }
 
-            //for (int s=0; s < this.MatrizMakeSpan.Length; s++)
-            //{
-            //    for(int t=0; t < this.MatrizMakeSpan[s].Length; t++)
-            //    {
-            //        Console.Write(this.MatrizMakeSpan[s][t] + " ");
-            //    }
+            for (int s = 0; s < this.MatrizMakeSpan.Length; s++)
+            {
+                for (int t = 0; t < this.MatrizMakeSpan[s].Length; t++)
+                {
+                    Console.Write(this.MatrizMakeSpan[s][t] + " ");
+                }
 
-            //    Console.WriteLine();
-            //}
+                Console.WriteLine();
+            }
 
             Console.WriteLine("Fitness Makespan: " + this.Fitness());
 

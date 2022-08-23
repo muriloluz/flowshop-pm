@@ -12,10 +12,10 @@ namespace flowshop_pm.GA
         public InfoManutencaoMaquina infoManutencaoMaquina { get; set; }
         public int TotalJobs { get; set; }
         public int TotalMaquinas { get; set; }
-        public int TempoParaManutencao { get; set; }
-        public int ManutencoesMaximaPorMaquina {  get; set; }   
+        public int[] TempoParaManutencao { get; set; }
+        public int[] ManutencoesMaximaPorMaquina {  get; set; }   
 
-        public InfoFlowShop(InfoJobs infoJobs, InfoManutencaoMaquina infoManutencaoMaquina, int totalJobs, int totalMaquinas, int tempoParaManutencao, int manutencoesMaximaPorMaquina)
+        public InfoFlowShop(InfoJobs infoJobs, InfoManutencaoMaquina infoManutencaoMaquina, int totalJobs, int totalMaquinas, int[] tempoParaManutencao, int[] manutencoesMaximaPorMaquina)
         {
             this.infoJobs = infoJobs;
             this.infoManutencaoMaquina = infoManutencaoMaquina;

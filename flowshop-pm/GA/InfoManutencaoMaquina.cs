@@ -11,9 +11,9 @@ namespace flowshop_pm.GA
         /// <summary>
         /// Tempo Manutenção máquina i número manutenção j
         /// </summary>
-        public int[][] TempoManutencao { get; set; }
+        public double[][] TempoManutencao { get; set; }
 
-        public InfoManutencaoMaquina(int[][] tempoManutencao)
+        public InfoManutencaoMaquina(double[][] tempoManutencao)
         {
             TempoManutencao = tempoManutencao;
         }

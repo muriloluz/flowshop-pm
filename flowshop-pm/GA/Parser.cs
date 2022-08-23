@@ -9,8 +9,10 @@ namespace flowshop_pm.GA
 {
     public class Parser
     {
-        public InfoFlowShop Ler()
+        public List<InfoFlowShop> Ler()
         {
+            var retorno = new List<InfoFlowShop>();
+
             var currentDir = Environment.CurrentDirectory + "\\data\\instancias_disp\\";
 
             var prefixoArquivo = "RGd_20_5_2_25_1";
@@ -28,8 +30,8 @@ namespace flowshop_pm.GA
 
                 var tabelProcessamento = new int[totalJobs][];
 
-            
-                for(int j = 0; j < totalJobs; j++)
+
+                for (int j = 0; j < totalJobs; j++)
                 {
                     linhaCorrente++;
                     tabelProcessamento[j] = new int[totalMaquinas];
@@ -47,16 +49,24 @@ namespace flowshop_pm.GA
                 linhaCorrente++;
 
                 //// Agora deve iniciar a leitura do TPM
-                if(linhasArquivo[linhaCorrente].Trim() != "TPM")
+                if (linhasArquivo[linhaCorrente].Trim() != "TPM")
                 {
                     throw new Exception("Algo inesperado no arquivo");
                 }
 
                 linhaCorrente++;
 
-                /// TODO: Valores do tempo máximo da manutenção
+                /// Valores do tempo máximo da manutenção
                 var tabelaPeriodoManutecao = new int[totalMaquinas];
 
+
+                for (int m = 0; m < totalMaquinas; m++)
+                {
+                    var valores = linhasArquivo[linhaCorrente].Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                    var posicaoEquivalente = 1;
+                    tabelaPeriodoManutecao[m] = int.Parse(valores[posicaoEquivalente]);
+                    posicaoEquivalente += 2;
+                }
 
                 linhaCorrente++;
 
@@ -71,7 +81,7 @@ namespace flowshop_pm.GA
                 linhaCorrente++;
 
                 //// Quantidade manutenções estimadas
-                var tabelaManutencoes = new int[totalJobs / 2][];
+                var tabelaManutencoes = new double[totalJobs / 2][];
 
                 var sequenciaManutencao = 0;
 
@@ -81,7 +91,7 @@ namespace flowshop_pm.GA
 
                     var posicaoEquivalente = 1;
 
-                    tabelaManutencoes[sequenciaManutencao] = new int[totalMaquinas];
+                    tabelaManutencoes[sequenciaManutencao] = new double[totalMaquinas];
 
                     for (int m = 0; m < totalMaquinas; m++)
                     {
@@ -93,17 +103,56 @@ namespace flowshop_pm.GA
                     sequenciaManutencao++;
                     linhaCorrente++;
                 }
+
+                /// calcular a media de tempo gasto em cada job
+
+                var tempoTotal = 0;
+
+                for (int j = 0; j < totalJobs; j++)
+                {
+                    for (int m = 0; m < totalMaquinas; m++)
+                    {
+                        tempoTotal += tabelProcessamento[j][m];
+                    }
+                }
+
+                var media = Math.Ceiling(((double)tempoTotal / (double)(totalJobs * totalMaquinas)));
+
+                foreach (var manutencao in tabelaManutencoes)
+                {
+                    if(manutencao != null)
+                    {
+                        for(int m =0; m < manutencao.Length; m++)
+                        {
+                            var percentual = ((double)(manutencao[m] / 100));
+                            manutencao[m] = Math.Ceiling(percentual * media);
+                        }
+                    }
+                }
+
+                var infoJobs = new InfoJobs(tabelProcessamento);
+                var infoManutencoes = new InfoManutencaoMaquina(tabelaManutencoes);
+
+                var tabelaManutencoesMaximas = new int[totalMaquinas];
+
+                for (int m = 0; m < totalMaquinas; m++)
+                {
+                    var tempoGasto = 0;
+
+                    for (int j = 0; j < totalJobs; j++)
+                    {
+                        tempoGasto += tabelProcessamento[j][m];
+                    }
+
+                    tabelaManutencoesMaximas[m] = (int)Math.Ceiling(((double)tempoGasto /(double)tabelaPeriodoManutecao[m]));
+                }
+
+                var infoFlowShop = new InfoFlowShop(infoJobs, infoManutencoes, totalJobs, totalMaquinas, tabelaPeriodoManutecao, tabelaManutencoesMaximas);
+
+                retorno.Add(infoFlowShop);
             }
 
-            var tempoParaManutecao = 120;
-            var manutencoesMaximas = 2;
-
-            //var infoJobs = new InfoJobs(tabelProcessamento);
-            //var infoManutencoes = new InfoManutencaoMaquina(tabelaManutecoes);
-
-            //var infoFlowShop = new InfoFlowShop(infoJobs, infoManutencoes, totalJobs, totalMaquinas, tempoParaManutecao, manutencoesMaximas);
-
-            return null;
+            return retorno;
         }
     }
 }

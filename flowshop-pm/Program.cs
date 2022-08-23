@@ -5,46 +5,41 @@ Console.WriteLine("Inicio");
 
 
 var parser = new Parser();
-var problema = parser.Ler();
 
-Console.WriteLine("Número de Jobs: {0} ============ Número de máquinas: {1}", problema.TotalJobs, problema.TotalMaquinas);
+var problemas = parser.Ler();
 
-Console.WriteLine("Tempo de processamento: ");
 
-for (int i = 0; i < problema.TotalMaquinas; i++)
+foreach (var problema in problemas)
 {
-    for (int j = 0; j < problema.TotalJobs; j++)
+    Console.WriteLine("Número de Jobs: {0} ============ Número de máquinas: {1}", problema.TotalJobs, problema.TotalMaquinas);
+
+    Console.WriteLine("Tempo de processamento: ");
+
+    for (int i = 0; i < problema.TotalMaquinas; i++)
     {
-        Console.Write(problema.infoJobs.TempoProcessamentoPorMaquina[i][j] + "  ");
+        for (int j = 0; j < problema.TotalJobs; j++)
+        {
+            Console.Write(problema.infoJobs.TempoProcessamentoPorMaquina[j][i] + "  ");
+        }
+
+        Console.WriteLine();
     }
 
-    Console.WriteLine();
-}
+    Console.WriteLine("Tempo processamento das manutenções: ");
 
-Console.WriteLine("Tempo processamento das manutenções: ");
-
-for (int i = 0; i < problema.TotalMaquinas; i++)
-{
-    for (int j = 0; j < problema.ManutencoesMaximaPorMaquina; j++)
+    for (int i = 0; i < problema.TotalMaquinas; i++)
     {
-        Console.Write(problema.infoManutencaoMaquina.TempoManutencao[i][j] + "  ");
+        for (int j = 0; j < problema.ManutencoesMaximaPorMaquina[i]; j++)
+        {
+            Console.Write(problema.infoManutencaoMaquina.TempoManutencao[j][i] + "  ");
+        }
+
+        Console.WriteLine();
     }
 
-    Console.WriteLine();
+    var estrategiaAg = new EstrategiaGA(problema);
+    estrategiaAg.Iniciar();
+
+
+    estrategiaAg.MelhorIndividuo.ImprimirIndividuo();
 }
-
-int tempoParaManutencao = 120;
-
-Console.WriteLine("Tempo máximo para manutenção: " + tempoParaManutencao);
-
-var estrategiaAg = new EstrategiaGA(problema);
-estrategiaAg.Iniciar();
-
-
-
-//int[] sequencia = new int[] { 0, 1, 2, 4, 3 };
-
-
-//var individuo = new Individuo(5, 3, sequencia);
-//individuo.AtualizarMakeSpan(estrategiaAg.InfoFlowShop);
-//individuo.ImprimirIndividuo();

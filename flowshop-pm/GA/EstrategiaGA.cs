@@ -28,7 +28,6 @@ namespace flowshop_pm.GA
             this.Limpar();
             this.IniciaPopulacao();
 
-
             for (int g = 0; g < Constantes.Geracoes; g++)
             {
                 for (int i = 0; i < Constantes.QuantidadeFilhosPorGeracao / 2; i++)
