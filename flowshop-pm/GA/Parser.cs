@@ -15,7 +15,7 @@ namespace flowshop_pm.GA
 
             var currentDir = Environment.CurrentDirectory + "\\data\\instancias_disp\\";
 
-            var prefixoArquivo = "RGd_20_*";
+            var prefixoArquivo = "RGd_20_5_2_25_1";
 
             var files = Directory.GetFiles(currentDir, prefixoArquivo + ".txt", SearchOption.AllDirectories);
 

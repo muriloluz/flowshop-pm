@@ -50,7 +50,11 @@ foreach (var problema in problemas.OrderBy(x=>x.NomeArquivo))
         var estrategiaAg = new EstrategiaGA(problema);
         estrategiaAg.Iniciar();
         resultado.Add(estrategiaAg.MelhorIndividuo.Fitness());
-        /// estrategiaAg.MelhorIndividuo.ImprimirIndividuo();
+
+        if (Constantes.ImprimirDetalhesExecucoes) 
+        { 
+            estrategiaAg.MelhorIndividuo.ImprimirIndividuo();
+        }
     }
 
     Console.WriteLine(problema.NomeArquivo + "      " +  resultado.Min() +  "     media: " + resultado.Average());

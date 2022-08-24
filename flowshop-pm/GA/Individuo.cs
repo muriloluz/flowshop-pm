@@ -23,6 +23,17 @@ namespace flowshop_pm.GA
         {
             this.MatrizMakeSpan = new double[this.QuantidadeTotalMaquinas + 1][];
 
+            ///Inicia array com as manutenções por máquinas           
+            for(int m = 0; m < this.QuantidadeTotalMaquinas; m++)
+            {
+                var manutencoesMaximaDaMaquina = infoFlowShop.ManutencoesMaximaPorMaquina[m];
+                this.ManutencaoPreventiva[m] = new int[manutencoesMaximaDaMaquina];
+                for (int mx = 0; mx < manutencoesMaximaDaMaquina; mx++)
+                {
+                    this.ManutencaoPreventiva[m][mx] = -1;
+                }
+            }
+
             for (int i = 0; i < this.QuantidadeTotalMaquinas + 1; i++)
             {
                 this.MatrizMakeSpan[i] = new double[QuantidadeTotalJobs + 1];
@@ -41,27 +52,20 @@ namespace flowshop_pm.GA
                 {
                     var tempoProcessamentoJob = infoFlowShop.infoJobs.TempoProcessamentoPorMaquina[this.SequenciaExecucaoJobs[j - 1]][i - 1];
 
-                    var manutencaoAtual = this.ManutencaoPreventiva[i - 1] == null ? 0 : this.ManutencaoPreventiva[i - 1].Length - 1;
+                    //// Está errado. Obtem a manutencao atual ou seja o indice da primeira com -1       
+                    var manutencaoAtual = this.ManutencaoPreventiva[i - 1].ToList().IndexOf(-1);
 
+                    //// Tempo para a manutenção na máquina
                     var tempoParaManutencao = infoFlowShop.TempoParaManutencao[i - 1];
 
                     var manutencaoNecessaria = (tempoGastoProcessamento + tempoProcessamentoJob) >= tempoParaManutencao;
+
+                    //// Tempo para realizar a manutenção
                     var tempoProcessamentoManutencao = manutencaoNecessaria ? infoFlowShop.infoManutencaoMaquina.TempoManutencao[manutencaoAtual][i - 1] : 0;
 
                     if (manutencaoNecessaria)
                     {
                         tempoGastoProcessamento = tempoProcessamentoJob;
-
-                        if (this.ManutencaoPreventiva[i - 1] == null)
-                        {
-                            var manutencoesMaximaDaMaquina = infoFlowShop.ManutencoesMaximaPorMaquina[i - 1];
-                            this.ManutencaoPreventiva[i - 1] = new int[manutencoesMaximaDaMaquina];
-                            for(int mx = 0; mx < manutencoesMaximaDaMaquina; mx++)
-                            {
-                                this.ManutencaoPreventiva[i - 1][mx] = -1;
-                            }
-                        }
-
                         this.ManutencaoPreventiva[i - 1][manutencaoAtual] = j - 1;
                     }
                     else

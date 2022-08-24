@@ -15,10 +15,10 @@ namespace flowshop_pm.Helpers
         public static int TaxaRecombinacao = 85;
         public static int QuantidadeFilhosPorGeracao = 10;
 
-        public static int QuantidadeExecucoes = 10;
+        public static int QuantidadeExecucoes = 20;
 
         public static bool ImprimirIndividuo = false;
-        public static bool ImprimirDetalhesExecucoes = false;
+        public static bool ImprimirDetalhesExecucoes = true;
 
         public static int ImprimirACada = 500;
         public static int ParticipantesTorneio = 2;
