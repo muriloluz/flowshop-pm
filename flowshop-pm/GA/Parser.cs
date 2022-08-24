@@ -15,7 +15,7 @@ namespace flowshop_pm.GA
 
             var currentDir = Environment.CurrentDirectory + "\\data\\instancias_disp\\";
 
-            var prefixoArquivo = "RGd_20_5_2_25_1";
+            var prefixoArquivo = "RGd_20_*";
 
             var files = Directory.GetFiles(currentDir, prefixoArquivo + ".txt", SearchOption.AllDirectories);
 
@@ -147,7 +147,8 @@ namespace flowshop_pm.GA
                     tabelaManutencoesMaximas[m] = (int)Math.Ceiling(((double)tempoGasto /(double)tabelaPeriodoManutecao[m]));
                 }
 
-                var infoFlowShop = new InfoFlowShop(infoJobs, infoManutencoes, totalJobs, totalMaquinas, tabelaPeriodoManutecao, tabelaManutencoesMaximas);
+                var nomeArquivo = file.Substring(file.LastIndexOf("\\")).Replace("\\", string.Empty).Replace(".txt",string.Empty);
+                var infoFlowShop = new InfoFlowShop(infoJobs, infoManutencoes, totalJobs, totalMaquinas, tabelaPeriodoManutecao, tabelaManutencoesMaximas, nomeArquivo);
 
                 retorno.Add(infoFlowShop);
             }

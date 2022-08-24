@@ -9,7 +9,6 @@ namespace flowshop_pm.GA
         public int[] SequenciaExecucaoJobs;
         protected int[][] ManutencaoPreventiva;
         private double[][] MatrizMakeSpan;
-        private double[][] MatrizMakeSpanComManutencao;
 
         public Individuo(int quantidadeTotalJobs, int quantidadeTotalMaquinas, int[] sequenciaExecucao)
         {
@@ -55,10 +54,12 @@ namespace flowshop_pm.GA
 
                         if (this.ManutencaoPreventiva[i - 1] == null)
                         {
-                            // TODO: remover máximo manutenção hardcoded
-                            this.ManutencaoPreventiva[i - 1] = new int[2];
-                            this.ManutencaoPreventiva[i - 1][0] = -1;
-                            this.ManutencaoPreventiva[i - 1][1] = -1;
+                            var manutencoesMaximaDaMaquina = infoFlowShop.ManutencoesMaximaPorMaquina[i - 1];
+                            this.ManutencaoPreventiva[i - 1] = new int[manutencoesMaximaDaMaquina];
+                            for(int mx = 0; mx < manutencoesMaximaDaMaquina; mx++)
+                            {
+                                this.ManutencaoPreventiva[i - 1][mx] = -1;
+                            }
                         }
 
                         this.ManutencaoPreventiva[i - 1][manutencaoAtual] = j - 1;

@@ -14,8 +14,16 @@ namespace flowshop_pm.GA
         public int TotalMaquinas { get; set; }
         public int[] TempoParaManutencao { get; set; }
         public int[] ManutencoesMaximaPorMaquina {  get; set; }   
+        public string NomeArquivo { get; set; }
 
-        public InfoFlowShop(InfoJobs infoJobs, InfoManutencaoMaquina infoManutencaoMaquina, int totalJobs, int totalMaquinas, int[] tempoParaManutencao, int[] manutencoesMaximaPorMaquina)
+        public InfoFlowShop(
+            InfoJobs infoJobs, 
+            InfoManutencaoMaquina infoManutencaoMaquina, 
+            int totalJobs, 
+            int totalMaquinas, 
+            int[] tempoParaManutencao,
+            int[] manutencoesMaximaPorMaquina,
+            string nomeArquivo)
         {
             this.infoJobs = infoJobs;
             this.infoManutencaoMaquina = infoManutencaoMaquina;
@@ -23,6 +31,7 @@ namespace flowshop_pm.GA
             TotalMaquinas = totalMaquinas;
             TempoParaManutencao = tempoParaManutencao;
             ManutencoesMaximaPorMaquina = manutencoesMaximaPorMaquina;
+            this.NomeArquivo = nomeArquivo;
         }
     }
 }
