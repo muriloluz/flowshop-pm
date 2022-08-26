@@ -1,0 +1,32 @@
+@startuml
+
+start
+:População Inicial;
+note left: Tamanho 25 \n Iniciada de forma aleatória, \n respeitando a ordenação da representação
+repeat 
+
+repeat 
+:Seleciona Pais;
+  note left: Seleção por torneio binário:\n Dois indivíduos são escolhidos aleatoriamente \n O melhor indivíduo (menor fitness) é selecionado \n A Fitness é o <i>makespan</i> e \n o tempo de manutenção é considerado nesse cálculo
+
+    if (Recombinação - 85%?) then (sim)
+      :Crossover Ordenado;
+  note left: É selecionado um subconjunto de elementos \n de um dos pais e transferida para o filho, as \n demais posições são completadas \n com as posições do outro pai
+    else (não)
+      :Clona;
+    endif
+
+    if (Mutação- 2%?) then (sim)
+      :Mutação SWAP;
+   note left: Duas posições são escolhidas \n de forma randômica e trocadas
+    else (não)
+    endif
+
+repeat while (Quantidade de filhos atingida?)
+:Seleciona Sobreviventes;
+ note left: Steady State: Troca parcial da população \n 10 filhos substituem os 10 piores pais \n 
+repeat while (Quantidade de gerações atingida?) 
+
+stop
+
+@enduml
